@@ -1,9 +1,10 @@
+require('dotenv').config(); // this loads the variables from .env file
 const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
-mongoose.connect(
-  "mongodb+srv://santy:WtpAJDNJvlulBTc5@cluster0.9wfcv2a.mongodb.net/course_app"
-);
+
+const mongo_url = process.env.MONGO_URL;
+mongoose.connect(mongo_url)
 
 const AdminSchema = new Schema({
   username: { type: String, unique: true },
@@ -16,7 +17,7 @@ const UserSchema = new Schema({
   purchasedCourses: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'Course'
+      ref: "Course",
     },
   ],
 });
@@ -25,7 +26,7 @@ const CourseSchema = new Schema({
   title: String,
   description: String,
   imageLink: String,
-  price: Number
+  price: Number,
 });
 
 const Admin = mongoose.model("Admin", AdminSchema);
