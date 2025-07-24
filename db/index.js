@@ -1,10 +1,10 @@
-require('dotenv').config(); // this loads the variables from .env file
 const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const mongo_url = process.env.MONGO_URL;
-mongoose.connect(mongo_url)
+mongoose.connect("mongodb+srv://santy:WtpAJDNJvlulBTc5@cluster0.9wfcv2a.mongodb.net/course_app")
+.then(() => console.log('MongoDB connected successfully! 👍'))
+.catch(err => console.error('MongoDB connection error: ', err))
 
 const AdminSchema = new Schema({
   username: { type: String, unique: true },
