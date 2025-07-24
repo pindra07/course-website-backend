@@ -2,6 +2,8 @@ const { Router } = require("express");
 const adminMiddleware = require("../middleware/admin");
 const { Admin, Course } = require("../db");
 const router = Router();
+const jwt = require("jsonwebtoken")
+const {JWT_SECRET} = require("../config")
 
 router.post("/signup", async (req, res) => {
   const username = req.body.username;
@@ -16,6 +18,24 @@ router.post("/signup", async (req, res) => {
     msg: "Admin created successfully",
   });
 });
+
+router.post("/signin", async (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+  const user = await User.find({
+    username,
+    password
+  })
+  if(user) {
+    jwt.sign({
+      username
+    }, JWT_SECRET)
+  } else {
+    res.json({
+      msg: "Wrong email and password"
+    })
+  }
+})
 
 router.post("/courses", adminMiddleware, async (req, res) => {
   const title = req.body.title;

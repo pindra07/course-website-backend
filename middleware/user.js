@@ -1,21 +1,20 @@
 const { User } = require("../db");
+const jwt = require("jsonwebtoken")
+const {JWT_SECRET} = require("../config")
 
 function userMiddleware(req, res, next) {
-  const username = req.headers.username;
-  const password = req.headers.password;
+  const token = req.headers.authorization;
+  const words = req.split(" ");
+  const jwtToken = words;
+  const decodedValue = jwt.verify(jwtToken, secret)
 
-  User.findOne({
-    username: username,
-    password: password,
-  }).then(function (value) {
-    if (value) {
-      next();
-    } else {
-      res.status(403).json({
-        msg: "user doesn't exist",
-      });
-    }
-  });
+  if(decodedValue.username) {
+    next()
+  } else {
+    res.status(403).json({
+      msg: "You're not authenticated"
+    })
+  }
 }
 
 module.exports = userMiddleware;

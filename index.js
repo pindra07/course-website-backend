@@ -4,6 +4,7 @@ const userRouter = require("./routes/user.js");
 const app = express();
 app.use(express.json());
 
+
 // Middleware for parsing request bodies
 app.use("/admin", adminRouter);
 app.use("/user", userRouter);
